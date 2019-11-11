@@ -3,16 +3,16 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
-public class Main : MonoBehaviour
+public class Network : MonoBehaviour
 {
     private const char charSpliter = ';';
+    public const char charValueSpliter = '=';
 
-    [SerializeField]
-    private Text text;
     [SerializeField]
     private string[] data;
 
     private bool run;
+
 
     private void Start()
     {
@@ -43,17 +43,19 @@ public class Main : MonoBehaviour
         else
         {
             // Show results as text
-            text.text += www.downloadHandler.text + "\n";
             data = www.downloadHandler.text.Split(charSpliter);
-
+            ManagerDevice.Instace.UpdateDevices(data);
 
             if (run)
             {
-                yield return new WaitForSeconds(1);
+                yield return new WaitForSeconds(0.1f);
                 StartCoroutine(GetText());
             }
             // Or retrieve results as binary data
             //byte[] results = www.downloadHandler.data;
         }
     }
+
+
+    public string[] Data { get => data; set => data = value; }
 }
