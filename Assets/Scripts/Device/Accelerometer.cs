@@ -59,8 +59,9 @@ public class Accelerometer : Device
             distance = 1000;
         }
 
-        slider.minValue = distance * 0.5f;
-        slider.maxValue = distance * 2;
+        slider.minValue = 0;
+        slider.maxValue = 2;
+        slider.value = 1;
     }
 
     private void Update()
@@ -68,13 +69,14 @@ public class Accelerometer : Device
         if (run)
         {
             actualDistance = Vector3.Distance(stableAxis, axis);
-            if (actualDistance > distance)
+            if (actualDistance > distance - slider.value)
             {
-                textFeedbackStatus.text = "Moved. Distance to change: " + (distance - actualDistance);
+                textFeedbackStatus.text = "Moved. Distance to change: " + ((distance * slider.value) - actualDistance);
+                textFeedbackStatus.text += ". at Sensibility" + (slider.value * 100).ToString("0.00") + "%";
             }
             else
             {
-                textFeedbackStatus.text = "Stable";
+                textFeedbackStatus.text = "Stable. at Sensibility " + (slider.value * 100).ToString("0.00") + "%";
             }
             textFeedStableAxis.text = "Stable Axis: " + stableAxis.ToString();
         }
