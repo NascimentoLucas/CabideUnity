@@ -1988,7 +1988,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: You need start listen
+  m_Text: You need start listen amd set Stable Axis
 --- !u!222 &914902005
 CanvasRenderer:
   m_ObjectHideFlags: 0

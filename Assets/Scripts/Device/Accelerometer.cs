@@ -39,11 +39,11 @@ public class Accelerometer : Device
             actualDistance = Vector3.Distance(stableAxis, axis);
             if (actualDistance > distance)
             {
-                textFeedbackStatus.text = "Moved: " + (distance - actualDistance);
+                textFeedbackStatus.text = "Moved. Distance to change: " + (distance - actualDistance);
             }
             else
             {
-                textFeedbackStatus.text = "Stable: " + actualDistance;
+                textFeedbackStatus.text = "Stable. Distance to change: " + (distance - actualDistance);
             }
             textFeedStableAxis.text = "Stable Axis: " + stableAxis.ToString();
         }
