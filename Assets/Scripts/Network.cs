@@ -14,34 +14,37 @@ public class Network : MonoBehaviour
 
     [Header("UI")]
     [SerializeField]
-    private Text configText;
-    [SerializeField]
     private Button buttonStartListen;
     [SerializeField]
     private Button buttonStoptListen;
     [SerializeField]
     private Button buttonSetStableAxis;
 
+    [Header("Setup")]
+    [SerializeField]
+    private SetupObject urlSetup;
+
+    [Header("Info")]
     [SerializeField]
     private string[] dataReceived;
 
-    private string configOriginalText;
-        
+    [SerializeField]
     private string url;
 
     private bool run;
 
+    private void Awake()
+    {
+        urlSetup.updateVariable = data => {
+            url = data.ToString();
+        };
+    }
 
     private void Start()
     {
         run = false;
-        url = Data.GetInstance().GetDataInfo(Data.keyUrl);
-        configOriginalText = configText.text;
-        UpdateTextSetup();
         SetButtonStartListen(true);
     }
-
-
 
     public void StartListen()
     {
@@ -59,7 +62,6 @@ public class Network : MonoBehaviour
         run = false;
         SetButtonStartListen(true);
     }
-
 
     IEnumerator GetText()
     {
@@ -91,19 +93,6 @@ public class Network : MonoBehaviour
         buttonStartListen.interactable = b;
         buttonStoptListen.interactable = !b;
         buttonSetStableAxis.interactable = !b;
-    }
-
-    private void UpdateTextSetup()
-    {
-        configText.text = "Saved: \"" + url + "\"!.\n" + configOriginalText;
-    }
-
-    public void SaveNewUrl(InputField input)
-    {
-        url = input.text;
-        input.text = "";
-        Data.GetInstance().SetDataInfo(Data.keyUrl, url);
-        UpdateTextSetup();
     }
 
     public string[] DataReceived { get => dataReceived; set => dataReceived = value; }

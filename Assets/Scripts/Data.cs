@@ -1,11 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+public enum DataKeys
+{
+    keyUrl,
+    keyDistance,
+}
+
 public class Data : MonoBehaviour
 {
-    private static Data Instance;
+    public delegate void DataModification(string data);
 
-    public const string keyUrl = "keyUrlToAcessArduino";
+    private static Data Instance;
 
     private void Awake()
     {
@@ -19,7 +25,7 @@ public class Data : MonoBehaviour
         {
             Destroy(this);
         }
-    }//http://192.168.0.35:80
+    }
 
     public static Data GetInstance()
     {
@@ -36,13 +42,13 @@ public class Data : MonoBehaviour
         return Instance;
     }
    
-    public string GetDataInfo(string key)
+    public string GetDataInfo(DataKeys key)
     {
-        return PlayerPrefs.GetString(key, "keyDidNotFind");
+        return PlayerPrefs.GetString(key.ToString(), "keyDidNotFind");
     }
 
-    public void SetDataInfo(string key, string value)
+    public void SetDataInfo(DataKeys key, string value)
     {
-        PlayerPrefs.SetString(key, value);
+        PlayerPrefs.SetString(key.ToString(), value);
     }
 }
