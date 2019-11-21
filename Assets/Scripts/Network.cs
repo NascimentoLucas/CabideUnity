@@ -25,7 +25,7 @@ public class Network : MonoBehaviour
         run = false;
     }
 
-    public void buttonStart()
+    public void StartListen()
     {
         if (!run)
         {
@@ -34,7 +34,7 @@ public class Network : MonoBehaviour
         }
     }
 
-    public void buttonStop()
+    public void StopListen()
     {
         run = false;
     }

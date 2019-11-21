@@ -6,9 +6,13 @@ using System;
 public class Accelerometer : Device
 {
     [SerializeField]
-    private Text text;
+    private Text textFeedbackStatus;
+    [SerializeField]
+    private Text textFeedAxis;
+    [SerializeField]
+    private Text textFeedStableAxis;
 
-    private Vector3 stableAxis;
+    private Vector3 stableAxis = Vector3.zero;
 
     [SerializeField]
     private float distance;
@@ -23,6 +27,11 @@ public class Accelerometer : Device
         axisName = new string[] { "lastAcX", "lastAcY", "lastAcZ" };
     }
 
+    private void Start()
+    {
+        textFeedStableAxis.text = "Stable Axis: " + stableAxis.ToString();
+    }
+
     private void Update()
     {
         if (run)
@@ -30,13 +39,16 @@ public class Accelerometer : Device
             actualDistance = Vector3.Distance(stableAxis, axis);
             if (actualDistance > distance)
             {
-                text.text = "Mexeu: " + (distance - actualDistance);
+                textFeedbackStatus.text = "Moved: " + (distance - actualDistance);
             }
             else
             {
-                text.text = "Parado: " + actualDistance;
+                textFeedbackStatus.text = "Stable: " + actualDistance;
             }
+            textFeedStableAxis.text = "Stable Axis: " + stableAxis.ToString();
         }
+        textFeedAxis.text = "Actual Axis: " + axis.ToString();
+
     }
 
     public void SetStableAxis()

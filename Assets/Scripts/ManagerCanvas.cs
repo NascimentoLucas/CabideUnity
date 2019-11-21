@@ -3,12 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ManagerCanvas : MonoBehaviour
-{
+{ 
     [SerializeField]
+    private Canvas menu;
     private Canvas actualCanvas;
 
     void Start()
     {
+        Canvas[] c = FindObjectsOfType<Canvas>();
+
+        foreach (Canvas canvas in c)
+        {
+            canvas.enabled = false;
+        }
+
+        actualCanvas = menu;
         actualCanvas.enabled = true;
     }
 
@@ -26,5 +35,10 @@ public class ManagerCanvas : MonoBehaviour
         {
             actualCanvas.enabled = true;
         }
+    }
+
+    public void GoToMenu()
+    {
+        ChangeCanvas(menu);
     }
 }
