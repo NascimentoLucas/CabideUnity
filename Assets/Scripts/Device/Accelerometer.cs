@@ -1,23 +1,22 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-
-enum State
-{
-    WORKING,
-    MOVED
-}
+using System;
 
 public class Accelerometer : Device
 {
-    private const int max= 15000, min = -1500;
-
     [SerializeField]
     private Text text;
 
-    private Vector3 lastAxis;
+    private Vector3 stableAxis;
 
-    private State state;
+    [SerializeField]
+    private float distance;
+    private float actualDistance;
+
+    private int actualState;
+
+    private bool run = false;
 
     private void Awake()
     {
@@ -26,15 +25,23 @@ public class Accelerometer : Device
 
     private void Update()
     {
-        if ((axis.x > max / 2 || axis.x < min / 2) )
+        if (run)
         {
-            state = State.WORKING;
+            actualDistance = Vector3.Distance(stableAxis, axis);
+            if (actualDistance > distance)
+            {
+                text.text = "Mexeu: " + (distance - actualDistance);
+            }
+            else
+            {
+                text.text = "Parado: " + actualDistance;
+            }
         }
-        else
-        {
-            state = State.MOVED;
-        }
-        lastAxis = axis;
-        text.text = state.ToString();
+    }
+
+    public void SetStableAxis()
+    {
+        run = true;
+        stableAxis = axis;
     }
 }

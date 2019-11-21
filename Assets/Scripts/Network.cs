@@ -9,7 +9,13 @@ public class Network : MonoBehaviour
     public const char charValueSpliter = '=';
 
     [SerializeField]
+    private ManagerDevice managerDevice;
+
+    [SerializeField]
     private string[] data;
+
+    [SerializeField]
+    private string site;
 
     private bool run;
 
@@ -21,8 +27,11 @@ public class Network : MonoBehaviour
 
     public void buttonStart()
     {
-        run = true;
-        StartCoroutine(GetText());
+        if (!run)
+        {
+            run = true;
+            StartCoroutine(GetText()); 
+        }
     }
 
     public void buttonStop()
@@ -33,7 +42,7 @@ public class Network : MonoBehaviour
 
     IEnumerator GetText()
     {
-        UnityWebRequest www = UnityWebRequest.Get("http://192.168.0.35:80");
+        UnityWebRequest www = UnityWebRequest.Get(site);
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError)
@@ -44,7 +53,7 @@ public class Network : MonoBehaviour
         {
             // Show results as text
             data = www.downloadHandler.text.Split(charSpliter);
-            ManagerDevice.Instace.UpdateDevices(data);
+            managerDevice.UpdateDevices(data);
 
             if (run)
             {

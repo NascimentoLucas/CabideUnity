@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class Device : MonoBehaviour
 {
-    private const float adjust = 1500;
-
     [SerializeField]
     protected Vector3 axis = Vector3.zero;
 
@@ -14,7 +12,7 @@ public abstract class Device : MonoBehaviour
     [SerializeField]
     protected float distanceMin;
 
-    public virtual void UpdateAxis(string[] data)
+    public void UpdateAxis(string[] data)
     {
         for (int i = 0; i < axisName.Length; i++)
         {
@@ -39,7 +37,7 @@ public abstract class Device : MonoBehaviour
                         finalValue = 0;
                         Debug.LogError("Value could not parse to float. Value =>" + value);
                     }
-                    finalValue += adjust;
+
                     if (i == 0)
                     {
                         if (Mathf.Abs(axis.x - finalValue) > distanceMin)
