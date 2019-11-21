@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
-using System.Collections.Generic;
+
 public class Network : MonoBehaviour
 {
     private const char charSpliter = ';';
@@ -12,10 +12,14 @@ public class Network : MonoBehaviour
     private ManagerDevice managerDevice;
 
     [SerializeField]
-    private string[] data;
+    private Text configText;
 
     [SerializeField]
-    private string site;
+    private string[] dataReceived;
+
+    private string configOriginalText;
+        
+    private string url;
 
     private bool run;
 
@@ -23,12 +27,16 @@ public class Network : MonoBehaviour
     private void Start()
     {
         run = false;
+        url = Data.GetInstance().GetDataInfo(Data.keyUrl);
+        configOriginalText = configText.text;
+        UpdateTextSetup();
     }
 
     public void StartListen()
     {
         if (!run)
         {
+            Debug.Log("Start Listen: " + url);
             run = true;
             StartCoroutine(GetText()); 
         }
@@ -42,7 +50,7 @@ public class Network : MonoBehaviour
 
     IEnumerator GetText()
     {
-        UnityWebRequest www = UnityWebRequest.Get(site);
+        UnityWebRequest www = UnityWebRequest.Get(url);
         yield return www.SendWebRequest();
 
         if (www.isNetworkError || www.isHttpError)
@@ -52,8 +60,8 @@ public class Network : MonoBehaviour
         else
         {
             // Show results as text
-            data = www.downloadHandler.text.Split(charSpliter);
-            managerDevice.UpdateDevices(data);
+            dataReceived = www.downloadHandler.text.Split(charSpliter);
+            managerDevice.UpdateDevices(dataReceived);
 
             if (run)
             {
@@ -65,6 +73,18 @@ public class Network : MonoBehaviour
         }
     }
 
+    private void UpdateTextSetup()
+    {
+        configText.text = "Saved: \"" + url + "\"!.\n" + configOriginalText;
+    }
 
-    public string[] Data { get => data; set => data = value; }
+    public void SaveNewUrl(InputField input)
+    {
+        url = input.text;
+        input.text = "";
+        Data.GetInstance().SetDataInfo(Data.keyUrl, url);
+        UpdateTextSetup();
+    }
+
+    public string[] DataReceived { get => dataReceived; set => dataReceived = value; }
 }
