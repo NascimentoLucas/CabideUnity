@@ -5,6 +5,7 @@ using System;
 
 public class Accelerometer : Device
 {
+    [Header("UI")]
     [SerializeField]
     private Text textFeedbackStatus;
     [SerializeField]
@@ -14,6 +15,7 @@ public class Accelerometer : Device
 
     private Vector3 stableAxis = Vector3.zero;
 
+    [Header("Setup")]
     [SerializeField]
     private float distance;
     private float actualDistance;
@@ -43,7 +45,7 @@ public class Accelerometer : Device
             }
             else
             {
-                textFeedbackStatus.text = "Stable. Distance to change: " + (distance - actualDistance);
+                textFeedbackStatus.text = "Stable";
             }
             textFeedStableAxis.text = "Stable Axis: " + stableAxis.ToString();
         }

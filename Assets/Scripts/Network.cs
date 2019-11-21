@@ -8,11 +8,19 @@ public class Network : MonoBehaviour
     private const char charSpliter = ';';
     public const char charValueSpliter = '=';
 
+    [Header("Setup")]
     [SerializeField]
     private ManagerDevice managerDevice;
 
+    [Header("UI")]
     [SerializeField]
     private Text configText;
+    [SerializeField]
+    private Button buttonStartListen;
+    [SerializeField]
+    private Button buttonStoptListen;
+    [SerializeField]
+    private Button buttonSetStableAxis;
 
     [SerializeField]
     private string[] dataReceived;
@@ -30,7 +38,10 @@ public class Network : MonoBehaviour
         url = Data.GetInstance().GetDataInfo(Data.keyUrl);
         configOriginalText = configText.text;
         UpdateTextSetup();
+        SetButtonStartListen(true);
     }
+
+
 
     public void StartListen()
     {
@@ -38,13 +49,15 @@ public class Network : MonoBehaviour
         {
             Debug.Log("Start Listen: " + url);
             run = true;
-            StartCoroutine(GetText()); 
+            StartCoroutine(GetText());
+            SetButtonStartListen(false);
         }
     }
 
     public void StopListen()
     {
         run = false;
+        SetButtonStartListen(true);
     }
 
 
@@ -71,6 +84,13 @@ public class Network : MonoBehaviour
             // Or retrieve results as binary data
             //byte[] results = www.downloadHandler.data;
         }
+    }
+
+    private void SetButtonStartListen(bool b)
+    {
+        buttonStartListen.interactable = b;
+        buttonStoptListen.interactable = !b;
+        buttonSetStableAxis.interactable = !b;
     }
 
     private void UpdateTextSetup()
